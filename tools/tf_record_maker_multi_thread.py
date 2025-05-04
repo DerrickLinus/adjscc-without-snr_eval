@@ -6,6 +6,7 @@
 # Created Date: Friday, April 14th 2023, 2:17:00 pm
 # Author: Shisui
 # Copyright (c) 2023 Uchiha
+# 多进程版本，生成多个.tfrecord文件，利用多核 CPU，可以显著加快大规模数据集（如 ImageNet）的处理速度
 # ----------	---	----------------------------------------------------------
 ###
 
@@ -163,6 +164,6 @@ def make_tf_record(src, dst, process_num=16):
 # %%
 
 if __name__ == "__main__":
-    src = "/home/jay/Documents/datasets/imagenet/ILSVRC/Data/CLS-LOC/train"
-    dst = "/home/jay/Documents/datasets/imagenet/"
-    make_tf_record(src=src, dst=dst, process_num=16)
+    src = "/home/jay/workspace/datasets/imagenet/ILSVRC/Data/CLS-LOC/train"
+    dst = "/home/jay/workspace/datasets/imagenet/tfrecord"
+    make_tf_record(src=src, dst=dst, process_num=16) # /home/jay/workspace/datasets/imagenet/tfrecord下已经有30个.tfrecord文件？

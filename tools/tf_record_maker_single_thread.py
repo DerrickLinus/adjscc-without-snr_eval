@@ -6,6 +6,7 @@
 # Created Date: Friday, April 14th 2023, 2:17:00 pm
 # Author: Shisui
 # Copyright (c) 2023 Uchiha
+# 单进程版本，只生成一个.tfrecord文件，适用于数据集相对较小或机器 CPU 核心数很少，处理的时间需要很长
 # ----------	---	----------------------------------------------------------
 ###
 
@@ -131,6 +132,6 @@ def make_tf_record(src, dst):
 # %%
 
 if __name__ == "__main__":
-    src = "/home/jay/Documents/datasets/imagenet/ILSVRC/Data/CLS-LOC/train"
-    dst = "/home/jay/Documents/datasets/imagenet/ILSVRC_train-crop_128.tfrecord"
+    src = "/home/jay/workspace/datasets/imagenet/ILSVRC/Data/CLS-LOC/train"
+    dst = "/home/jay/workspace/datasets/imagenet/ILSVRC_train-crop_128.tfrecord"
     make_tf_record(src=src, dst=dst)

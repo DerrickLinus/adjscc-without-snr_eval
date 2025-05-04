@@ -7,7 +7,9 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 import tensorflow as tf
 import numpy as np
 import argparse
-from dataset import dataset_imagenet
+from dataset import dataset_imagenet_multi_thread # 多线程版本，对应 tf_record_maker_multi_thread.py
+# from dataset import dataset_imagenet_multi_thread_read_metadata # 多线程直接读取元数据版本，对应 tf_record_maker_multi_thread_sample_count.py
+# from dataset import dataset_imagenet_single_thread # 单线程版本，对应 tf_record_maker_single_thread.py
 import os
 import json
 import datetime
@@ -23,9 +25,9 @@ def get_kodak():
     images = np.empty(shape=[0,512,768,3])
     for i in range(1, 25):
         if i<10:
-            image_path = 'dataset/kodak/kodim0' + str(i) + '.png'
+            image_path = '/home/jay/workspace/datasets/kodak/kodim0' + str(i) + '.png'
         else:
-            image_path = 'dataset/kodak/kodim' + str(i) + '.png'
+            image_path = '/home/jay/workspace/datasets/kodak/kodim' + str(i) + '.png'
         img_file = tf.io.read_file(image_path)
         image = tf.image.decode_png(img_file, channels=3)
         if image.shape[0] == 768:
