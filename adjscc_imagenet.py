@@ -52,7 +52,8 @@ def train(args, model):
     model_path = args.model_dir + filename + '.h5'
     cbk = ModelCheckpoint(model_path, monitor='loss', save_best_only=True, save_weights_only=True, save_freq=100)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=args.board_dir, histogram_freq=1, update_freq=20, profile_batch='1000,1020')
-    train_ds, train_nums = dataset_imagenet.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
+    train_ds, train_nums = dataset_imagenet_multi_thread.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
+    # train_ds, train_nums = dataset_imagenet.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
     # train_ds = train_ds.shuffle(buffer_size=train_nums, reshuffle_each_iteration=True)
     train_ds = train_ds.batch(args.batch_size)
     train_ds = train_ds.prefetch(buffer_size=AUTOTUNE)
@@ -61,7 +62,6 @@ def train(args, model):
     print("########## Start Training ##########")
     print("image nums: ", train_nums)
     h = model.fit(train_ds, epochs=args.epochs, batch_size=args.batch_size, callbacks=[cbk, tensorboard_callback], workers=8, use_multiprocessing=True)
-
 
 def eval(args, model):
     filename = os.path.basename(__file__).split('.')[0] + '_' + str(args.channel_type) + '_tcn' + str(

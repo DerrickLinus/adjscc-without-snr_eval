@@ -13,3 +13,9 @@ ImageNet is manually made and is too huge to upload.
 J. Xu, B. Ai, W. Chen, A. Yang, P. Sun and M. Rodrigues, "Wireless Image Transmission Using Deep Source Channel Coding With Attention Modules," in IEEE Transactions on Circuits and Systems for Video Technology, vol. 32, no. 4, pp. 2315-2328, April 2022, doi: 10.1109/TCSVT.2021.3082521.
 
 If you have any question, please feel free to contact me via: xjl-88410@163.com
+
+
+# 查看 Tensorboard 事件日志文件
+```python
+tensorboard --logdir=checkpoint/adjscc_imagenet-96-16ch-20250504_142143/board/ # 根据生成的日志文件路径修改
+```
