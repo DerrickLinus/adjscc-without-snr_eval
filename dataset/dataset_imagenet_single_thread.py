@@ -7,13 +7,19 @@ from PIL import Image
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
+# def get_num_samples(tfrecord_paths):
+#     num_samples = 0
+#     for tfrecord_path in tfrecord_paths:
+#         for record in tf.compat.v1.python_io.tf_record_iterator(tfrecord_path):
+#             num_samples += 1
+#     return num_samples
+
 def get_num_samples(tfrecord_paths):
     num_samples = 0
-    for tfrecord_path in tfrecord_paths:
-        for record in tf.compat.v1.python_io.tf_record_iterator(tfrecord_path):
-            num_samples += 1
+    dataset = tf.data.TFRecordDataset(tfrecord_paths)
+    for _ in dataset:
+        num_samples += 1
     return num_samples
-
 
 def _parse_function(example_proto):
     features = {

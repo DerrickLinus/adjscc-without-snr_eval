@@ -133,5 +133,6 @@ def make_tf_record(src, dst):
 
 if __name__ == "__main__":
     src = "/home/jay/workspace/datasets/imagenet/ILSVRC/Data/CLS-LOC/train"
-    dst = "/home/jay/workspace/datasets/imagenet/ILSVRC_train-crop_128.tfrecord"
+    # dst = "/home/jay/workspace/datasets/imagenet/ILSVRC_train-crop_128.tfrecord"
+    dst = "dataset/imagenet/ILSVRC_train-crop_128.tfrecord"
     make_tf_record(src=src, dst=dst)

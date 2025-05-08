@@ -160,9 +160,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 logs/*
-checkpoint/*
+checkpoint/
 libdevice.10.bc
 dataset/kodak
+dataset/imagenet/
 tmp/
 predict_pic/
 dataset/imagenet/ILSVRC_train-crop_128.tfrecord

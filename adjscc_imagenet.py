@@ -7,9 +7,9 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 import tensorflow as tf
 import numpy as np
 import argparse
-from dataset import dataset_imagenet_multi_thread # 多线程版本，对应 tf_record_maker_multi_thread.py
+# from dataset import dataset_imagenet_multi_thread # 多线程版本，对应 tf_record_maker_multi_thread.py
 # from dataset import dataset_imagenet_multi_thread_read_metadata # 多线程直接读取元数据版本，对应 tf_record_maker_multi_thread_sample_count.py
-# from dataset import dataset_imagenet_single_thread # 单线程版本，对应 tf_record_maker_single_thread.py
+from dataset import dataset_imagenet_single_thread # 单线程版本，对应 tf_record_maker_single_thread.py
 import os
 import json
 import datetime
@@ -51,8 +51,9 @@ def train(args, model):
         args.snr_up_train) + '_bs' + str(args.batch_size) + '_lr' + str(args.learning_rate)
     model_path = args.model_dir + filename + '.h5'
     cbk = ModelCheckpoint(model_path, monitor='loss', save_best_only=True, save_weights_only=True, save_freq=100)
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=args.board_dir, histogram_freq=1, update_freq=20, profile_batch='1000,1020')
-    train_ds, train_nums = dataset_imagenet_multi_thread.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
+    # tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=args.board_dir, histogram_freq=1, update_freq=20, profile_batch='1000,1020')
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=args.board_dir, histogram_freq=0, update_freq=20, profile_batch=0)
+    train_ds, train_nums = dataset_imagenet_single_thread.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
     # train_ds, train_nums = dataset_imagenet.get_dataset_snr_range(args.snr_low_train, args.snr_up_train)
     # train_ds = train_ds.shuffle(buffer_size=train_nums, reshuffle_each_iteration=True)
     train_ds = train_ds.batch(args.batch_size)
@@ -76,7 +77,7 @@ def eval(args, model):
     for snrdb in range(args.snr_low_eval, args.snr_up_eval + 1):
         imse = []
         # test 10 times each snr
-        eval_dataset, eval_nums = dataset_imagenet.get_eval_dataset_snr_range_from_dir(snrdb)
+        eval_dataset, eval_nums = dataset_imagenet_single_thread.get_eval_dataset_snr_range_from_dir(snrdb)
         eval_dataset = eval_dataset.prefetch(buffer_size=AUTOTUNE)
         eval_dataset = eval_dataset.batch(1)
         eval_dataset = eval_dataset.cache()
@@ -147,7 +148,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", help='train/eval/eval_pic/')
+    parser.add_argument("command", help='train/eval/predict')
+    # parser.add_argument("command", help='train/eval/eval_pic/') # eval_pic？写错了吗
     parser.add_argument("-ct", '--channel_type', help="awgn", default='awgn')
     parser.add_argument("-md", '--model_dir', help="dir for model", default='model/')
     parser.add_argument("-lmp", '--load_model_path', help="model path for loading")
